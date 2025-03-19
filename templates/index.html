@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Validasi Angka - Marshanda Harry</title>
+    <style>
+      /* Global Styles */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Arial", sans-serif;
+      }
+
+      body {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background: url("/static/background.jpg") no-repeat center center/cover;
+        color: white;
+        text-align: center;
+      }
+
+      .menu {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+
+      .dropdown {
+        position: relative;
+        display: inline-block;
+      }
+
+      .dropdown-content {
+        display: none;
+        position: absolute;
+        background-color: rgb(0, 0, 0, 0.8);
+        min-width: 100px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        border-radius: 5px;
+        text-align: left;
+      }
+
+      .dropdown-content button {
+        display: block;
+        width: 100%;
+        border: none;
+        background: none;
+        padding: 10px;
+        text-align: left;
+        cursor: pointer;
+      }
+
+      .dropdown-content button:hover {
+        background: #ddd;
+      }
+
+      .dropdown:hover .dropdown-content {
+        display: block;
+      }
+
+      .container {
+        background: rgba(0, 0, 0, 0.8);
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        width: 90%;
+        max-width: 400px;
+      }
+
+      input {
+        width: 100%;
+        padding: 10px;
+        margin: 10px 0;
+        font-size: 16px;
+        border: none;
+        border-radius: 5px;
+        text-align: center;
+      }
+
+      button {
+        padding: 10px;
+        font-size: 16px;
+        background: #ff9800;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        color: white;
+        transition: 0.3s;
+        margin: 5px;
+      }
+
+      button:hover {
+        background: #f57c00;
+      }
+
+      #result {
+        font-size: 18px;
+        font-weight: bold;
+        margin-top: 15px;
+        padding: 10px;
+        border-radius: 5px;
+        display: none;
+      }
+
+      .valid {
+        background-color: #4caf50;
+      }
+
+      .invalid {
+        background-color: #d32f2f;
+      }
+
+      #aboutModal {
+        display: none;
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: white;
+        color: black;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        text-align: center;
+      }
+
+      #aboutModal button {
+        background: #d32f2f;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Menu Atas -->
+    <div class="menu">
+      <div class="dropdown">
+        <button>File</button>
+        <div class="dropdown-content">
+          <button onclick="saveFile()">Save</button>
+          <button onclick="saveAsFile()">Save As</button>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button>Edit</button>
+        <div class="dropdown-content">
+          <button onclick="copyInput()">Copy</button>
+          <button onclick="pasteInput()">Paste</button>
+        </div>
+      </div>
+      <button onclick="checkNumber()">Run</button>
+      <button onclick="showAbout()">About Us</button>
+    </div>
+
+    <div class="container">
+      <h2>Scientific Number Validator</h2>
+      <input type="text" id="numberInput" placeholder="Enter a number" />
+      <button onclick="checkNumber()">Check</button>
+      <p id="result"></p>
+    </div>
+
+    <div id="aboutModal">
+      <p><strong>Nama:</strong> Marshanda Harry</p>
+      <p><strong>NIM:</strong> 123456789</p>
+      <button onclick="closeAbout()">Close</button>
+    </div>
+
+    <script>
+      function checkNumber() {
+        let inputValue = document.getElementById("numberInput").value;
+        let resultElement = document.getElementById("result");
+
+        fetch("/validate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ input: inputValue }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            resultElement.innerText = data.message;
+            resultElement.style.display = "block";
+
+            if (data.message === "Yes, it is a number") {
+              resultElement.className = "valid";
+            } else {
+              resultElement.className = "invalid";
+            }
+          });
+      }
+
+      function saveFile() {
+        let input = document.getElementById("numberInput").value;
+        let result = document.getElementById("result").innerText;
+        let content = `Input: ${input}\nResult: ${result}\n\n\n Created by: Marshanda Harry`;
+
+        let blob = new Blob([content], { type: "text/plain" });
+        let a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "validation_result.txt";
+        a.click();
+      }
+
+      function saveAsFile() {
+        let fileName = prompt("Masukkan Nama File:", "validation_result.txt");
+        if (fileName) {
+          saveFileWithName(fileName);
+        }
+      }
+
+      function saveFileWithName(fileName) {
+        let input = document.getElementById("numberInput").value;
+        let result = document.getElementById("result").innerText;
+        let content = `Input: ${input}\nResult: ${result}\n\n\n Created by: Marshanda Harry`;
+
+        let blob = new Blob([content], { type: "text/plain" });
+        let a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = fileName;
+        a.click();
+      }
+
+      function copyInput() {
+        let input = document.getElementById("numberInput");
+        input.select();
+        document.execCommand("copy");
+      }
+
+      function pasteInput() {
+        navigator.clipboard.readText().then((text) => {
+          document.getElementById("numberInput").value = text;
+        });
+      }
+
+      function showAbout() {
+        document.getElementById("aboutModal").style.display = "block";
+      }
+
+      function closeAbout() {
+        document.getElementById("aboutModal").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
