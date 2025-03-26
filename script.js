@@ -20,9 +20,11 @@ function pasteText() {
 }
 
 function saveFile() {
+  let input = document.getElementById("inputNumber").value;
   let message = document.getElementById("message").innerText;
   if (message) {
-    let blob = new Blob([message], { type: "text/plain" });
+    let content = `Input: ${input}\nResult: ${message}`;
+    let blob = new Blob([content], { type: "text/plain" });
     let link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = "validation_result.txt";
@@ -33,8 +35,10 @@ function saveFile() {
 function saveAsFile() {
   let filename = prompt("Enter filename:", "validation_result.txt");
   if (filename) {
+    let input = document.getElementById("inputNumber").value;
     let message = document.getElementById("message").innerText;
-    let blob = new Blob([message], { type: "text/plain" });
+    let content = `Input: ${input}\nResult: ${message}`;
+    let blob = new Blob([content], { type: "text/plain" });
     let link = document.createElement("a");
     link.href = URL.createObjectURL(blob);
     link.download = filename;
@@ -43,5 +47,5 @@ function saveAsFile() {
 }
 
 function showAbout() {
-  alert("Developer: Marshanda Ivanna Harry\nID: 123456789");
+  alert("Developer: Glerio\nID: 123456789");
 }
