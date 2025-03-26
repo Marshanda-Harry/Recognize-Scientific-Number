@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Scientific Number Validator</title>
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js"></script>
+  </head>
+  <body>
+    <div class="menu">
+      <div class="dropdown">
+        <button>File</button>
+        <div class="dropdown-content">
+          <button onclick="saveFile()">Save</button>
+          <button onclick="saveAsFile()">Save As</button>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button>Edit</button>
+        <div class="dropdown-content">
+          <button onclick="copyText()">Copy</button>
+          <button onclick="pasteText()">Paste</button>
+        </div>
+      </div>
+      <div class="dropdown">
+        <button>About</button>
+        <div class="dropdown-content">
+          <button onclick="showAbout()">User</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <h2>Scientific Number Validator</h2>
+      <input type="text" id="inputNumber" placeholder="Enter a number..." />
+      <button onclick="validateNumber()">Run</button>
+      <p id="message"></p>
+    </div>
+  </body>
+</html>
