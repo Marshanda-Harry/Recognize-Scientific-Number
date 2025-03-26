@@ -47,5 +47,5 @@ function saveAsFile() {
 }
 
 function showAbout() {
-  alert("Developer: Glerio\nID: 123456789");
+  alert("Developer: Marshanda Ivanna Harry\nID: 231011060039");
 }
